@@ -10,7 +10,10 @@ router.post('/register', authControllers.register);
 // Rota de login
 router.post('/login', authControllers.login);
 
-router.get('/users', authControllers.getAllUsers);  // Agora essa linha vai funcionar
+router.get('/users', authControllers.getAllUsers); 
+
+router.delete('/users/:id', authControllers.deleteUser);
+
 
 
 export default router;

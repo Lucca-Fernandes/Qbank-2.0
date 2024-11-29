@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
   const [users, setUsers] = useState([]);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -19,8 +19,17 @@ function Dashboard() {
     fetchUsers();
   }, []);
 
+  const deleteUser = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/auth/users/${id}`);
+      setUsers(users.filter(user => user._id !== id)); // Atualiza a lista de usuários localmente
+    } catch (error) {
+      console.error('Erro ao excluir o usuário:', error);
+    }
+  };
+
   const goHome = () => {
-    navigate('/'); // Navega para a página inicial
+    navigate('/');
   };
 
   const styles = {
@@ -63,6 +72,17 @@ function Dashboard() {
       maxWidth: '600px',
       textAlign: 'left',
       borderLeft: '5px solid #4CAF50',
+      position: 'relative',
+    },
+    deleteIcon: {
+      position: 'absolute',
+      top: '10px',
+      right: '10px',
+      background: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      color: 'red',
+      fontSize: '1.5rem',
     },
     button: {
       position: 'fixed',
@@ -90,6 +110,13 @@ function Dashboard() {
             <h3 style={{ color: '#4CAF50' }}>{user.name}</h3>
             <p>Email: {user.email}</p>
             <p>Senha: {user.password}</p>
+            <button
+              style={styles.deleteIcon}
+              onClick={() => deleteUser(user._id)}
+              title="Excluir usuário"
+            >
+              🗑️
+            </button>
           </div>
         ))}
       </div>

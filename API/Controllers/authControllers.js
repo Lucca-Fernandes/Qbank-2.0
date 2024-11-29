@@ -80,3 +80,14 @@ export const getAllUsers = async (req, res) => {
       res.status(500).json({ message: 'Erro ao buscar usuários', error: error.message });
     }
   };
+
+  export const deleteUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+      await User.findByIdAndDelete(id);
+      res.status(200).json({ message: 'Usuário excluído com sucesso!' });
+    } catch (error) {
+      console.error('Erro ao excluir usuário:', error);
+      res.status(500).json({ message: 'Erro ao excluir usuário', error: error.message });
+    }
+  };
